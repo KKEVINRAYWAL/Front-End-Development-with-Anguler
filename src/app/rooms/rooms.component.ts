@@ -1,31 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { Room, Roomlist } from './rooms';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'hinv-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css']
 })
-export class RoomsComponent implements OnInit{
+export class RoomsComponent implements OnInit, DoCheck, AfterViewInit {
   hotelname = 'Hilton Hotel';
   roomCount = 10;
   hideRooms = false;
-  numberofRooms=20;
-  selectedRoom!:Roomlist;
+  numberofRooms = 20;
+  selectedRoom!: Roomlist;
 
-  rooms: Room ={
+  rooms: Room = {
     totalRooms: 20,
     availableRooms: 10,
     bookedRooms: 5,
     capacity: 2,
-    id:1001,
+    id: 1001,
   }
-  Roomlist: Roomlist[]=[];
 
-  constructor(){}
+  title = 'Room List'
+  Roomlist: Roomlist[] = [];
+
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+  @ViewChildren(HeaderComponent) headerChildrenComponent!: QueryList<HeaderComponent>;
+  constructor() { }
+
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+    console.log(this.headerComponent);
+    // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    // Add 'implements OnInit' to the class.
     this.Roomlist = [
       {
         roomNumber: 1,
@@ -149,39 +156,39 @@ export class RoomsComponent implements OnInit{
       }
     ];
   }
-  
-  toggle() {
-    this.hideRooms=!this.hideRooms;
+
+  ngDoCheck() {
+    console.log('on changes is called');
   }
-//   selectRoom(room: Roomlist) {
-//     console.log('selectRoom called with:', room); // Log the room parameter
-//     this.selectedRoom = room;
-//     console.log('selectedRoom after assignment:', this.selectedRoom); // Log the selectedRoom property
-// }
 
+  ngAfterViewInit() {
+    this.headerComponent.title = "Rooms View";
+    this.headerChildrenComponent.last.title="Last Title";
+  }
 
+  toggle() {
+    this.hideRooms = !this.hideRooms;
+    this.title = "Rooms List"
+  }
 
-// In RoomsComponent
-selectRoom(room: Roomlist) {
-  console.log('Selected room received:', room);
-  this.selectedRoom = room;
-}
+  selectRoom(room: Roomlist) {
+    console.log('Selected room received:', room);
+    this.selectedRoom = room;
+  }
 
-addRoom(){
-  const room: Roomlist = {
-    roomNumber:4,
-    roomType: 'Delux Room',
-    amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-    price: 500,
-    photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-    checkinTime: '14:00', // 2:00 PM
-    checkoutTime: '11:00',
-    rating: 2.5
-  };
-  this.Roomlist= [... this.Roomlist, room];
-
-}
-
+  addRoom() {
+    const room: Roomlist = {
+      roomNumber: 4,
+      roomType: 'Delux Room',
+      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
+      price: 500,
+      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
+      checkinTime: '14:00', // 2:00 PM
+      checkoutTime: '11:00',
+      rating: 2.5
+    };
+    this.Roomlist = [... this.Roomlist, room];
+  }
 
   bookRoom() {
     if (this.roomCount > 0) {
@@ -192,4 +199,3 @@ addRoom(){
     }
   }
 }
-

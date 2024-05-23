@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-<h1>Welcome to {{ hotelname }}</h1>
+<!-- <h1>Welcome to {{ hotelname }}</h1> -->
+<hinv-header></hinv-header>
+<hinv-header></hinv-header>
+<hinv-header></hinv-header>
+
 <p>Number of available rooms: {{ roomCount }}</p>
 <button (click)="bookRoom()">Book a Room</button>
 <div [hidden]="hideRooms">
@@ -26,6 +30,7 @@
 
 <div *ngIf="rooms.availableRooms > 0"> 
     <hinv-rooms-list [rooms]="Roomlist"
+    [title]="title"
     (selectedRoom)="selectRoom($event)"
     ></hinv-rooms-list>
     </div>
