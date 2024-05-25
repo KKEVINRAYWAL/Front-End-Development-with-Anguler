@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef, Optional } from '@angular/core';
 import { RoomsComponent } from './rooms/rooms.component';
+import { LoggerService } from './logger.service';  // Adjust the import path as needed
 
 @Component({
   selector: 'hinv-root',
@@ -14,17 +15,21 @@ export class AppComponent implements OnInit {
   @ViewChild('name', { static: true }) name!: ElementRef;
   @ViewChild('user', { read: ViewContainerRef }) vcr!: ViewContainerRef;
 
-  ngOnInit() {
-    this.name.nativeElement.innerText = "Hilton Hotel";
-
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+  constructor(@Optional() private loggerService: LoggerService) {  // Corrected usage of LoggerService
   }
 
-  // @ViewChild('user', { read: ViewContainerRef }) vcr!: ViewContainerRef;
-
-  // ngAfterViewInit() {
-  //   const componentRef = this.vcr.createComponent(RoomsComponent);
-  //   componentRef.instance.numberofRooms= 50;
-  // }
+  ngOnInit() {
+    this.name.nativeElement.innerText = "Hilton Hotel";
+    // this.loggerService?.log('AppComponent.ngOnInit()');  // Using loggerService to avoid linting error
+  }
 }
+
+
+
+
+// @ViewChild('user', { read: ViewContainerRef }) vcr!: ViewContainerRef;
+
+// ngAfterViewInit() {
+//   const componentRef = this.vcr.createComponent(RoomsComponent);
+//   componentRef.instance.numberofRooms= 50;
+// }

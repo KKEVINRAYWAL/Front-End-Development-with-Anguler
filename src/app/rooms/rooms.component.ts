@@ -1,6 +1,7 @@
-import { Component, OnInit, DoCheck, ViewChild, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, AfterViewInit, ViewChildren, QueryList, SkipSelf } from '@angular/core';
 import { Room, Roomlist } from './rooms';
 import { HeaderComponent } from '../header/header.component';
+import { RoomsService } from './services/rooms.service';
 
 @Component({
   selector: 'hinv-rooms',
@@ -27,134 +28,15 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   @ViewChildren(HeaderComponent) headerChildrenComponent!: QueryList<HeaderComponent>;
-  constructor() { }
+  // roomsService = new RoomsService();
+
+  constructor( private roomService: RoomsService) { }
 
   ngOnInit(): void {
     console.log(this.headerComponent);
     // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     // Add 'implements OnInit' to the class.
-    this.Roomlist = [
-      {
-        roomNumber: 1,
-        roomType: 'Single Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 5000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00',
-        rating: 2.5
-      },
-      {
-        roomNumber: 2,
-        roomType: 'Double Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 10000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 3.5
-      },
-      {
-        roomNumber: 3,
-        roomType: 'Delux Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 5000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.7
-      },
-      {
-        roomNumber: 4,
-        roomType: 'Twin Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 50000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.4
-      },
-      {
-        roomNumber: 5,
-        roomType: 'Quad Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 105000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.5
-      },
-      {
-        roomNumber: 6,
-        roomType: 'Queen Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 7000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 3.5
-      },
-      {
-        roomNumber: 7,
-        roomType: 'King Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 7000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.5
-      },
-      {
-        roomNumber: 8,
-        roomType: 'Suite',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 675000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 3.9
-      },
-      {
-        roomNumber: 9,
-        roomType: 'Studio Room or Apartment',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 5000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 3.5
-      },
-      {
-        roomNumber: 10,
-        roomType: 'Junior Suite',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 85000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.5
-      },
-      {
-        roomNumber: 11,
-        roomType: 'Executive Suite',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 785000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.5
-      },
-      {
-        roomNumber: 12,
-        roomType: 'Delux Room',
-        amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-        price: 5000,
-        photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-        checkinTime: '14:00', // 2:00 PM
-        checkoutTime: '11:00', // 11:00 AM,
-        rating: 4.5
-      }
-    ];
+   this.Roomlist= this.roomService.getRooms();
   }
 
   ngDoCheck() {
@@ -163,7 +45,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit {
 
   ngAfterViewInit() {
     this.headerComponent.title = "Rooms View";
-    this.headerChildrenComponent.last.title="Last Title";
+    this.headerChildrenComponent.last.title = "Last Title";
   }
 
   toggle() {
