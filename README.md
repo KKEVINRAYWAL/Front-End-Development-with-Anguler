@@ -133,3 +133,15 @@ Injector: The injector is responsible for creating instances of the dependencies
 Token: A token is an identifier used by the injector to locate a provider. This can be a class, a string, or an InjectionToken.
 
 Decorator: Decorators like @Injectable(), @Inject(), @Optional(), and @Self() are used to define and control how dependencies are provided and injected.
+
+ # **Setting Up HttpClientModule: Angular HTTP and Observables**
+ HttpService , RxJs observables and http get
+RxJs Observable and Observer
+ Http Put and Delete
+ Http Request
+ ShareReplay RxJs Operators
+ Async Pipe
+catchError operator
+ map operator
+ Http Interceptor 
+ APP_INITIALIZER

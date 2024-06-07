@@ -1,138 +1,52 @@
-import { Injectable } from '@angular/core';
-import { Roomlist } from '../rooms';
-import { Console } from 'console';
+import { Injectable, Inject } from '@angular/core';
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Roomlist, Room } from '../rooms';
+import { environment } from '../../../environments/environment';
+import { APP_SERVICE_CONFIG } from '../../AppConfig/appconfig.service';
+import { AppConfig } from '../../AppConfig/appconfig.interface';
+import { Observable } from 'rxjs'; // Import Observable
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoomsService {
   Roomlist: Roomlist[] = [
-    {
-      roomNumber: 1,
-      roomType: 'Single Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 5000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00',
-      rating: 2.5
-    },
-    {
-      roomNumber: 2,
-      roomType: 'Double Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 10000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 3.5
-    },
-    {
-      roomNumber: 3,
-      roomType: 'Delux Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 5000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.7
-    },
-    {
-      roomNumber: 4,
-      roomType: 'Twin Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 50000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.4
-    },
-    {
-      roomNumber: 5,
-      roomType: 'Quad Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 105000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.5
-    },
-    {
-      roomNumber: 6,
-      roomType: 'Queen Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 7000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 3.5
-    },
-    {
-      roomNumber: 7,
-      roomType: 'King Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 7000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.5
-    },
-    {
-      roomNumber: 8,
-      roomType: 'Suite',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 675000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 3.9
-    },
-    {
-      roomNumber: 9,
-      roomType: 'Studio Room or Apartment',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 5000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 3.5
-    },
-    {
-      roomNumber: 10,
-      roomType: 'Junior Suite',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 85000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.5
-    },
-    {
-      roomNumber: 11,
-      roomType: 'Executive Suite',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 785000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.5
-    },
-    {
-      roomNumber: 12,
-      roomType: 'Delux Room',
-      amenities: 'Air conditioner, Free WIFI, TV, Bathroom, Kitchen',
-      price: 5000,
-      photos: 'https://unsplash.com/photos/gray-padded-chaise-couch-beside-window-rEJxpBskj3Q',
-      checkinTime: '14:00', // 2:00 PM
-      checkoutTime: '11:00', // 11:00 AM,
-      rating: 4.5
-    }
+    // Room list data...
   ];
 
-  constructor() { 
+  constructor(
+    @Inject(APP_SERVICE_CONFIG) private config: AppConfig,
+    private http: HttpClient
+  ) {
+    console.log(this.config.apiEndpoint); // logs the API endpoint
     console.log('Room Service Initialized');
   }
-  getRooms() {
-    return this.Roomlist
+
+  getRooms(): Observable<Roomlist[]> {
+    return this.http.get<Roomlist[]>('/api/rooms'); // Specify the type
+  }
+
+  addRoom(room: Roomlist): Observable<Roomlist[]> {
+    return this.http.post<Roomlist[]>('/api/rooms', room);
+  }
+
+  editRoom(room: Roomlist): Observable<Roomlist[]> {
+    return this.http.put<Roomlist[]>('/api/rooms', room);
+  }
+
+  deleteRoom(roomNumber: string): Observable<Roomlist[]> {
+    return this.http.delete<Roomlist[]>(`/api/rooms/${roomNumber}`);
+  }
+  getPhotos(){
+    const request= new HttpRequest (
+      'GET', 
+      'https://jsonplaceholder.typicode.com/photos',
+      {
+        reportProgress: true,
+      }
+    );
+    return this.http.request(request);
+  
   }
 }
+

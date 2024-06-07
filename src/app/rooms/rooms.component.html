@@ -1,42 +1,104 @@
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-<!-- <h1>Welcome to {{ hotelname }}</h1> -->
-<hinv-header></hinv-header>
-<hinv-header></hinv-header>
-<hinv-header></hinv-header>
 
-<p>Number of available rooms: {{ roomCount }}</p>
-<button (click)="bookRoom()">Book a Room</button>
-<div [hidden]="hideRooms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .photo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .photo-item img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .photo-item p {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: #ccc;
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #4caf50;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+  <hinv-header></hinv-header>
+  <p>Number of available rooms: {{ roomCount }}</p>
+  <button (click)="bookRoom()">Book a Room</button>
+  <div [hidden]="hideRooms">
     Number of Rooms:
-    <div [ngStyle]="{'color': rooms.availableRooms > 0 ? 'green' : 'black'}"
-         [innerText]="numberofRooms">  
+    <div [ngStyle]="{'color': rooms.availableRooms > 0 ? 'green' : 'black'}" [innerText]="numberofRooms"></div>
+  </div>
+  <div *ngIf="selectedRoom">{{ selectedRoom | json }}</div>
+  <div>
+    <button (click)="addRoom()">Add Room</button>
+  </div>
+  <div *ngIf="rooms.availableRooms > 0">
+    <hinv-rooms-list [rooms]="Roomlist" [title]="title" (selectedRoom)="selectRoom($event)"></hinv-rooms-list>
+  </div>
+  <button (click)="toggle()">Toggle</button>
+  <button (click)="editRoom()">Edit Room</button>
+  <button (click)="deleteRoom('3')">Delete Room</button> <!-- Replace '3' with dynamic value as needed -->
+
+  <!-- Progress indicator -->
+  <div *ngIf="loading">
+    <p>Loading... {{ progress }}%</p>
+    <div class="progress-container">
+      <div class="progress-bar" [style.width.%]="progress"></div>
     </div>
+    <div class="spinner"></div>
+  </div>
 
-</div>
-<div *ngIf="selectedRoom">
-{{selectedRoom|json}}
-</div>
-
-<div>
-  <button (click)="addRoom()"> Add Room</button>
-</div>
-
-<div *ngIf="rooms.availableRooms > 0"> 
-    <hinv-rooms-list [rooms]="Roomlist"
-    [title]="title"
-    (selectedRoom)="selectRoom($event)"
-    ></hinv-rooms-list>
+  <!-- Photo gallery -->
+  <div class="photo-grid">
+    <div class="photo-item" *ngFor="let photo of visiblePhotos">
+      <img [src]="photo.thumbnailUrl" [alt]="photo.title">
+      <p>{{ photo.title }}</p>
     </div>
-    
+  </div>
 
-<button (click)="toggle()">Toggle</button>
-  </body>
+  <!-- Load more button -->
+  <button (click)="loadMorePhotos()" *ngIf="hasMorePhotos">Load More Photos</button>
+</body>
+
 </html>
-
